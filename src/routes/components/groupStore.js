@@ -16,6 +16,7 @@ export function setUrl(){
 }
 
 export  function getUrl(url){
+    // on recupére le groupUrl pour la renvoyer
     groupUrl = url
     console.log(groupUrl)
     return groupUrl;

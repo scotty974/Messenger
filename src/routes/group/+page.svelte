@@ -5,6 +5,7 @@
 
 
     onMount(() => {
+        // ici on va attendre le chargement des élements de la page avant d'afficher l'url du groupe
       setUrl()
     })
 </script>

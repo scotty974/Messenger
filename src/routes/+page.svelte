@@ -12,6 +12,7 @@ let groupUrl;
             const groupRef = collection(db,"group");
             const docRef = await addDoc(groupRef,{})
             groupUrl = docRef.id;
+            // on appelle la fonction pour recupérer le groupUrl
             getUrl(groupUrl);
             window.location.href = `/group?id=${groupUrl}`
         }
