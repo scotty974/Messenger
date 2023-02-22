@@ -9,7 +9,7 @@
     let name = getName()
     let message = '';
     let messageList = [];
-    console.log("name", name)
+    
    
     async function adMessage(){
         const docData = {
@@ -25,38 +25,41 @@
 
     onMount(()=>{
         const db = getFirestore(firebaseApp);
-        const groupRef = collection(db,'group',groupid,"message")
-        const q = query(groupRef,orderBy("date","asc"))
+        const groupRef = collection(db,'group',groupid,"messages")
+        const q = query(groupRef)
         onSnapshot(q,fetchMessage)
     })
     async function fetchMessage(){
+        console.log(onSnapshot)
         const db = getFirestore(firebaseApp);
-        const messageCol = query(collection(db,'group',groupid,"messages"));
+        const messageCol = query(collection(db,'group',groupid,"messages"),orderBy("date","asc"));
         const docGet = await getDocs(messageCol)
         messageList = [];
-        messageList = docGet.docs.map((message)=>message.data())
-        return messageList
+        docGet.forEach((doc)=>{
+            messageList.push(doc.data())
+        })
     }
 </script>
 
 <h4>Share this : http://localhost:5173/group?id={groupid}</h4>
     <div class="window">
         {#each messageList as message }
-        {#if name = message.user}
+        {#if name == message.user}
         <div class="myMessage">
             <div class="message">
                 <h4>{message.user}</h4>
                 <p>{message.message}</p>
             </div>
         </div>
-        {/if}
-      {:else}
+        {:else}
         <div class="userMessage">
             <div class="usersMessage">
                 <h4>{message.user}</h4>
                 <p>{message.message}</p>
             </div>
         </div>
+        {/if}
+     
         {/each}
   
     
@@ -64,5 +67,5 @@
         
             <form class="chat" on:submit|preventDefault={adMessage}>
             <input placeholder="your message" bind:value={message} type="text" name="message" id="message" />
-            <button type="submit"  >Send</button>
+            <button type="submit" >Send</button>
         </form>
